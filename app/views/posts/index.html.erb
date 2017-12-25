@@ -1,0 +1,113 @@
+    <div class="container">
+        <div class="row">
+         
+                    <div class="col-md-9 ">
+                         <% @posts.each do |post| %>
+                        
+                            <br/>
+                            
+                                <div class="panel panel-default widget">
+
+                                    <div class="panel-body">
+                                            
+                                            <br/>
+                                        <div class="card mb-4">
+                                            <div align="center">
+                                             <% if post.image2? %>
+                                             <div class="row">
+                                                <div class="col-md-6">
+                                                <%=image_tag post.image.url(:ikili),class:"img img-responsive" if post.image?%>
+                                                </div>
+                                                <div class="col-md-6">
+                                                <%=image_tag post.image2.url(:ikili),class:"img img-responsive" if post.image2?%>
+                                                </div>
+                                            </div>
+                                            <% else %>
+                                                <%=image_tag post.image.url(:orta),class:"img img-responsive" if post.image?%>
+                                            <% end %>
+                                            </div>
+                                            <div class="card-body">
+                                                  <h2 class="card-title"><%= link_to post.title, post_path(post),id:"yazi" %></h2>
+                                                    <p class="card-text" id="paragraf">
+                                                            <%=post.msg%>
+                                                    </p>
+                                                     <%= link_to "Tamamını Görüntüle", post_path(post), class:"btn btn-primary",id:"yazi"%>
+                                                  
+                                            </div>
+                                            <div class="card-footer text-muted">
+                                                    <br/>
+                                                        <div align="center">
+                                                            <div class="action">
+                                                              <div id="<%=post.id%>"></div>
+                                                              <%if Like.where(user:current_user, post:post).count>0%>
+                                                                 <%= link_to "  ", unlike_post_path(post), class:"glyphicon glyphicon-heart",remote: :true, method: :put,id:"yazi" %>
+                                                              <%else%>
+                                                                 <%= link_to "  ", like_post_path(post), class:"glyphicon glyphicon-heart-empty",remote: :true, method: :put,id:"yazi" %>
+                                                              <%end%>
+                                                              <%= link_to '', post, :method => :delete, data: {confirm: 'Eminmisin?',commit: 'Evet'},class:"glyphicon glyphicon-trash" ,id:"yazi"%>
+                                                              <%= link_to '', edit_post_path(post),class:"glyphicon glyphicon-pencil",id:"yazi" %>
+                                                              <%= link_to '', post_path(post),class:"glyphicon glyphicon-hand-right",id:"yazi" %>
+                                                              
+                                                            </div>
+                                                        </div>
+                                                            <hr>
+                                                               
+                                                              <div class="mic-info">
+                                                                  <div align="center">
+                                                                   <%=post.created_at%> <%=post.user.name%> <%=image_tag post.user.image.url(:mini) if post.user.image?%>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                              
+                                            </div>
+                                        
+                          
+                                        </div>
+                                    </div>
+                                </div>    
+                          <%end%>  
+                    </div>    
+                    <div class="col-md-3">
+                        <% if user_signed_in? %>
+                        <br/>
+                        
+                         <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <h3 class="panel-title">Paylaştığın Konular</h3>
+                            </div>
+                            <div class="panel-body">
+                                 <% @posts.each do |post| %>
+                                 
+                                 <br/>
+                                 <% if post.user_id==current_user.id %>
+                                 <div id="konular">
+                                 <%= link_to post.title, post_path(post),id:"yazi" %>
+                                 </div>
+                                 <%end%>
+                                 <%end%>
+                            </div>
+                            </div>
+                        <%end%>
+                        <br/>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <h3 class="panel-title">Konular</h3>
+                            </div>
+                            <div class="panel-body">
+                                 <% @posts.each do |post| %>
+                                 
+                                 <br/>
+                                 <div id="konular">
+                                 <%= link_to post.title, post_path(post),id:"yazi" %>
+                                 </div>
+                                 
+                                 <%end%>
+                            </div>
+                        </div>
+                        
+                    </div>
+                
+          
+           
+        </div>
+    </div>
